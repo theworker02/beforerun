@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://theworker02.github.io/beforerun/sitemap.xml
