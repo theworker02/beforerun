@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="BeforeRun is a zero-dependency Go security scanner for inspecting untrusted repositories before execution.">
+  <meta name="theme-color" content="#07111f">
+  <meta property="og:title" content="BeforeRun — Inspect Before Execution">
+  <meta property="og:description" content="Scan untrusted repositories before scripts, hooks, tasks, or binaries can run.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://theworker02.github.io/beforerun/">
+  <meta property="og:image" content="https://theworker02.github.io/beforerun/assets/beforerun-mark.svg">
+  <link rel="canonical" href="https://theworker02.github.io/beforerun/">
+  <link rel="icon" href="assets/beforerun-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <title>BeforeRun — Inspect Before Execution</title>
+</head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="BeforeRun home">
+      <img src="assets/beforerun-mark.svg" alt="" width="42" height="42">
+      <span>BeforeRun</span>
+    </a>
+    <nav aria-label="Primary navigation">
+      <a href="#features">Features</a>
+      <a href="#install">Install</a>
+      <a href="https://pkg.go.dev/github.com/theworker02/beforerun">Go module</a>
+      <a class="nav-cta" href="https://github.com/theworker02/beforerun/releases/latest">Release</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <a class="eyebrow" href="https://github.com/theworker02/beforerun/releases/latest">
+          <span class="status-dot"></span>
+          v1.0.0 available now
+        </a>
+        <h1>Inspect repositories<br><span>before they run.</span></h1>
+        <p class="hero-lead">BeforeRun is a zero-dependency Go security scanner that exposes risky scripts, hooks, downloads, credentials, binaries, symlink escapes, and Unicode deception before project-controlled code executes.</p>
+        <div class="actions">
+          <a class="button button-primary" href="https://github.com/theworker02/beforerun/releases/latest">Download latest release</a>
+          <a class="button button-secondary" href="https://pkg.go.dev/github.com/theworker02/beforerun">View official Go module</a>
+        </div>
+        <div class="trust-row" aria-label="Project attributes">
+          <span>Open source</span>
+          <span>MIT licensed</span>
+          <span>Local-first</span>
+          <span>Windows · Linux · macOS</span>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-label="BeforeRun command example">
+        <div class="mark-shell">
+          <img src="assets/beforerun-mark.svg" alt="BeforeRun shield with terminal prompt and controlled flame">
+        </div>
+        <div class="terminal">
+          <div class="terminal-bar">
+            <span></span><span></span><span></span>
+            <strong>repository intake</strong>
+          </div>
+          <pre><code><span class="prompt">$</span> beforerun scan ./untrusted-repo --fail-on high
+
+<span class="blue">BeforeRun PASS</span> — risk 0/100 (CLEAN)
+Scanned 47 files in 18ms
+Findings: 0 critical, 0 high, 0 medium</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="link-strip" aria-label="Official project destinations">
+      <a href="https://pkg.go.dev/github.com/theworker02/beforerun">
+        <span class="link-label">Official Go documentation</span>
+        <strong>pkg.go.dev/github.com/theworker02/beforerun</strong>
+      </a>
+      <a href="https://github.com/theworker02/beforerun/releases/latest">
+        <span class="link-label">Latest binaries</span>
+        <strong>GitHub Release v1.0.0</strong>
+      </a>
+      <a href="https://github.com/theworker02/beforerun">
+        <span class="link-label">Source code</span>
+        <strong>github.com/theworker02/beforerun</strong>
+      </a>
+    </section>
+
+    <section class="section" id="features">
+      <div class="section-heading">
+        <p>Repository intake security</p>
+        <h2>Catch execution surfaces ordinary linters ignore.</h2>
+      </div>
+      <div class="feature-grid">
+        <article>
+          <span class="feature-number">01</span>
+          <h3>Script and hook detection</h3>
+          <p>Find package lifecycle scripts, editor automation, dev-container hooks, and remote content piped directly into shells.</p>
+        </article>
+        <article>
+          <span class="feature-number">02</span>
+          <h3>Repository artifact analysis</h3>
+          <p>Flag executables, dynamic libraries, private keys, suspicious submodules, and symlinks escaping the project root.</p>
+        </article>
+        <article>
+          <span class="feature-number">03</span>
+          <h3>Automation-ready reports</h3>
+          <p>Use human-readable output or structured JSON with configurable severity thresholds and reliable CI exit codes.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section install-section" id="install">
+      <div class="section-heading">
+        <p>Start scanning</p>
+        <h2>One command. No runtime dependencies.</h2>
+      </div>
+      <div class="install-grid">
+        <div class="install-card">
+          <div class="install-title"><span>CLI</span><strong>Install the scanner</strong></div>
+          <pre><code>go install github.com/theworker02/beforerun/cmd/beforerun@latest</code></pre>
+          <a href="https://github.com/theworker02/beforerun/releases/latest">Or download a signed release archive →</a>
+        </div>
+        <div class="install-card">
+          <div class="install-title"><span>MODULE</span><strong>Embed the scanning API</strong></div>
+          <pre><code>go get github.com/theworker02/beforerun@v1.0.0</code></pre>
+          <a href="https://pkg.go.dev/github.com/theworker02/beforerun">Read the official Go package reference →</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <img src="assets/beforerun-mark.svg" alt="" width="82" height="82">
+      <div>
+        <p>Do not trust first. Inspect first.</p>
+        <h2>Put BeforeRun in front of unfamiliar code.</h2>
+      </div>
+      <a class="button button-primary" href="https://github.com/theworker02/beforerun/releases/latest">Get BeforeRun</a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="brand footer-brand">
+      <img src="assets/beforerun-mark.svg" alt="" width="34" height="34">
+      <span>BeforeRun</span>
+    </div>
+    <p>Created by <a href="https://github.com/theworker02">theworker02</a>. Released under the MIT License.</p>
+    <div class="footer-links">
+      <a href="https://github.com/theworker02/beforerun">GitHub</a>
+      <a href="https://pkg.go.dev/github.com/theworker02/beforerun">Go module</a>
+      <a href="https://github.com/theworker02/beforerun/releases/latest">Releases</a>
+    </div>
+  </footer>
+</body>
+</html>
