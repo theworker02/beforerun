@@ -1,24 +1,37 @@
-# BeforeRun
+<p align="center">
+  <img src="assets/brand/beforerun-lockup.svg" alt="BeforeRun — inspect before execution" width="760">
+</p>
+
+<p align="center">
+  <strong>Zero-dependency security intake scanner for untrusted repositories.</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/theworker02/beforerun/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/theworker02/beforerun/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://pkg.go.dev/github.com/theworker02/beforerun"><img alt="Go Reference" src="https://pkg.go.dev/badge/github.com/theworker02/beforerun.svg"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+</p>
 
 **Inspect a repository before the repository inspects your machine.**
 
-BeforeRun is a zero-dependency Go CLI that scans an unfamiliar codebase before you install dependencies, open automated workspace tasks, build a dev container, or execute project scripts.
+BeforeRun is a local-first Go security tool that scans an unfamiliar codebase before you install dependencies, trust an editor workspace, build a dev container, or execute project scripts. It is available as both a command-line application and an importable Go package.
 
-It focuses on *execution surfaces* that ordinary linters often ignore: package lifecycle hooks, editor automation, remote scripts piped to shells, encoded PowerShell, committed credentials, executable artifacts, escaping symlinks, suspicious submodules, and Unicode source deception.
+BeforeRun never executes repository code, installs dependencies, or uploads scanned contents.
 
-## Why BeforeRun?
+## What it detects
 
-Cloning source code is usually passive. The next click or command often is not:
+- automatic package lifecycle scripts;
+- VS Code folder-open tasks and terminal overrides;
+- dev-container initialization and post-create hooks;
+- remote downloads piped directly into shells;
+- encoded and dynamic PowerShell execution;
+- possible committed credentials and private keys;
+- executable or dynamic binary artifacts;
+- symbolic links escaping the repository root;
+- suspicious local or relative submodules;
+- bidirectional Unicode source deception.
 
-- `npm install` can run lifecycle scripts.
-- Opening a trusted editor workspace can expose automatic tasks and terminal overrides.
-- Dev containers can run initialization and post-create hooks.
-- Build scripts can download and execute remote content.
-- Repositories can include binaries, private keys, or symlinks that leave the project root.
-
-BeforeRun gives you a fast, local report before those execution paths are activated. It never executes project code and does not upload repository contents.
-
-## Install
+## Install the CLI
 
 ```bash
 go install github.com/theworker02/beforerun/cmd/beforerun@latest
@@ -32,7 +45,7 @@ cd beforerun
 go build -o beforerun ./cmd/beforerun
 ```
 
-## Usage
+## CLI usage
 
 ```bash
 # Scan the current directory
@@ -44,8 +57,11 @@ beforerun scan . --fail-on medium
 # Machine-readable output
 beforerun scan ./untrusted-repo --format json
 
-# Ignore generated or organization-specific paths
+# Ignore organization-specific paths
 beforerun scan . --ignore fixtures,third_party/cache
+
+# Print the installed version
+beforerun version
 ```
 
 Example output:
@@ -61,6 +77,51 @@ Findings: 1 critical, 1 high, 0 medium, 0 low | fail-on=high
   Fix: Download the content separately, verify its source and checksum, then inspect it before execution.
 ```
 
+## Use BeforeRun as a Go module
+
+```bash
+go get github.com/theworker02/beforerun
+```
+
+```go
+package main
+
+import (
+    "fmt"
+    "log"
+
+    "github.com/theworker02/beforerun"
+)
+
+func main() {
+    summary, err := beforerun.Scan("./untrusted-repo", beforerun.Options{
+        Threshold: beforerun.SeverityHigh,
+        Ignores:   []string{"fixtures"},
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    fmt.Printf("risk=%d findings=%d blocked=%t\n",
+        summary.RiskScore,
+        len(summary.Findings),
+        summary.ThresholdMet,
+    )
+}
+```
+
+The public package exports `Scan`, `Options`, `Summary`, `Finding`, severity constants, `ParseSeverity`, and `.beforerunignore` parsing.
+
+## Package map
+
+| Path | Purpose |
+| --- | --- |
+| `github.com/theworker02/beforerun` | Public reusable scanning API |
+| `cmd/beforerun` | Command-line application |
+| `internal/scanner` | Filesystem walker and detection engine |
+| `internal/model` | Findings, severity, and summary data model |
+| `internal/report` | Text and JSON report renderers |
+
 ## Exit codes
 
 | Code | Meaning |
@@ -68,8 +129,6 @@ Findings: 1 critical, 1 high, 0 medium, 0 low | fail-on=high
 | `0` | No finding met the configured threshold |
 | `1` | At least one finding met the threshold |
 | `2` | Invalid arguments or scan failure |
-
-This makes BeforeRun suitable for pre-commit checks, CI jobs, download sandboxes, package review queues, and internal repository intake workflows.
 
 ## Detection rules
 
@@ -101,25 +160,43 @@ examples/expected-binaries
 
 BeforeRun ignores common generated directories by default, including `.git`, `node_modules`, `vendor`, `dist`, `build`, `.next`, `.turbo`, and `coverage`.
 
-## CI
+## CI and releases
+
+Every push and pull request runs formatting verification, `go vet`, race-enabled tests, a full build, and a BeforeRun self-scan. Version tags matching `v*` invoke GoReleaser to produce checksummed Windows, Linux, and macOS archives for AMD64 and ARM64.
 
 ```yaml
 - name: Scan repository execution surfaces
   run: go run ./cmd/beforerun scan . --fail-on high
 ```
 
+## Development
+
+```bash
+make check
+```
+
+Equivalent commands:
+
+```bash
+gofmt -w .
+go vet ./...
+go test -race ./...
+go build ./cmd/beforerun
+go run ./cmd/beforerun scan . --fail-on critical
+```
+
+## Brand assets
+
+- [Shield mark](assets/brand/beforerun-mark.svg)
+- [README lockup](assets/brand/beforerun-lockup.svg)
+- [Brand guidelines](docs/branding.md)
+
 ## Security model
 
 BeforeRun is a fast static intake scanner, not a malware sandbox and not proof that a repository is safe. A clean report means no enabled rule matched the inspected files. Continue to review provenance, dependencies, signatures, and high-impact scripts.
 
-## Development
-
-```bash
-go test ./...
-go vet ./...
-go build ./cmd/beforerun
-```
+See [SECURITY.md](SECURITY.md) for vulnerability reporting.
 
 ## License
 
-MIT
+MIT © 2026 Matthew Looney
