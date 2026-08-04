@@ -87,12 +87,38 @@ jobs:
       - name: Request Go proxy indexing
         shell: bash
         run: |
+          indexed=false
           for attempt in $(seq 1 18); do
             if GOPROXY=https://proxy.golang.org go list -m github.com/theworker02/beforerun@v1.0.0; then
-              exit 0
+              indexed=true
+              break
             fi
             echo "Go proxy has not indexed v1.0.0 yet (attempt ${attempt}/18)"
             sleep 10
           done
-          echo "Release publication succeeded; Go proxy indexing is still pending and will complete asynchronously."
-          exit 0
+          echo "GO_PROXY_INDEXED=${indexed}" >> "$GITHUB_ENV"
+
+      - name: Record successful publication
+        shell: bash
+        run: |
+          git checkout -B release-status/v1.0.0 origin/main
+          mkdir -p .release-status
+          cat > .release-status/v1.0.0.json <<EOF
+          {
+            "version": "v1.0.0",
+            "tag": "published",
+            "release_assets": "published",
+            "go_proxy_indexed_during_run": "${GO_PROXY_INDEXED}",
+            "platforms": [
+              "linux/amd64",
+              "linux/arm64",
+              "darwin/amd64",
+              "darwin/arm64",
+              "windows/amd64",
+              "windows/arm64"
+            ]
+          }
+          EOF
+          git add .release-status/v1.0.0.json
+          git commit -m "Record successful BeforeRun v1.0.0 publication"
+          git push --force origin HEAD:refs/heads/release-status/v1.0.0
