@@ -1,0 +1,44 @@
+name: Remove temporary release branches
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/cleanup-branches.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Delete temporary branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          branches=(
+            "release/v1.0.0"
+            "release/v1.0.0-finalize"
+            "release/v1.0.0-verify"
+            "release-status/v1.0.0"
+            "temp-noop"
+            "release-status-preserved"
+            "cleanup-trigger"
+          )
+
+          for branch in "${branches[@]}"; do
+            if git ls-remote --exit-code --heads origin "refs/heads/${branch}" >/dev/null 2>&1; then
+              git push origin --delete "${branch}"
+            else
+              echo "Branch already absent: ${branch}"
+            fi
+          done
