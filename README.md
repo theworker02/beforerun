@@ -9,7 +9,16 @@
 <p align="center">
   <a href="https://github.com/theworker02/beforerun/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/theworker02/beforerun/actions/workflows/ci.yml/badge.svg"></a>
   <a href="https://pkg.go.dev/github.com/theworker02/beforerun"><img alt="Go Reference" src="https://pkg.go.dev/badge/github.com/theworker02/beforerun.svg"></a>
+  <a href="https://theworker02.github.io/beforerun/"><img alt="Official Website" src="https://img.shields.io/badge/website-GitHub%20Pages-38bdf8.svg"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+</p>
+
+<p align="center">
+  <a href="https://theworker02.github.io/beforerun/"><strong>Official website</strong></a>
+  ·
+  <a href="https://pkg.go.dev/github.com/theworker02/beforerun"><strong>Official Go module</strong></a>
+  ·
+  <a href="https://github.com/theworker02/beforerun/releases/latest"><strong>Latest release</strong></a>
 </p>
 
 **Inspect a repository before the repository inspects your machine.**
@@ -78,6 +87,8 @@ Findings: 1 critical, 1 high, 0 medium, 0 low | fail-on=high
 ```
 
 ## Use BeforeRun as a Go module
+
+**Official module documentation:** [pkg.go.dev/github.com/theworker02/beforerun](https://pkg.go.dev/github.com/theworker02/beforerun)
 
 ```bash
 go get github.com/theworker02/beforerun
