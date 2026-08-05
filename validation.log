@@ -1,0 +1,22 @@
+$ go version
+go version go1.23.12 linux/amd64
+$ gofmt -l .
+delta.go
+$ go vet ./...
+$ go test -race ./...
+?   	github.com/theworker02/beforerun/internal/model	[no test files]
+?   	github.com/theworker02/beforerun/internal/report	[no test files]
+ok  	github.com/theworker02/beforerun	1.014s
+ok  	github.com/theworker02/beforerun/cmd/beforerun	1.010s
+ok  	github.com/theworker02/beforerun/internal/scanner	1.012s
+$ go build ./cmd/beforerun
+$ go run ./cmd/beforerun scan . --fail-on critical
+BeforeRun PASS — risk 18/100 (MEDIUM)
+Scanned 49 files (86.3 KiB) in /home/runner/work/beforerun/beforerun
+Findings: 0 critical, 1 high, 0 medium, 0 low | fail-on=critical
+
+[HIGH] BR009 scripts/publish-github.ps1
+  repository contains an executable or dynamic binary artifact
+  Evidence: .ps1
+  Fix: Verify the artifact provenance and checksum, or build it from reviewed source.
+
