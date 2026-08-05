@@ -22,20 +22,47 @@ jobs:
         with:
           go-version-file: go.mod
           check-latest: true
-      - name: Verify source
+      - name: Verify source and record diagnostics
+        shell: bash
         run: |
-          set -euo pipefail
-          test -z "$(gofmt -l .)"
-          go vet ./...
-          go test -race ./...
-          go build ./cmd/beforerun
-          go run ./cmd/beforerun scan . --fail-on critical
+          set +e
+          {
+            echo '$ go version'
+            go version
+            echo '$ gofmt -l .'
+            UNFORMATTED=$(gofmt -l .)
+            printf '%s\n' "$UNFORMATTED"
+            test -z "$UNFORMATTED"
+            echo '$ go vet ./...'
+            go vet ./...
+            echo '$ go test -race ./...'
+            go test -race ./...
+            echo '$ go build ./cmd/beforerun'
+            go build ./cmd/beforerun
+            echo '$ go run ./cmd/beforerun scan . --fail-on critical'
+            go run ./cmd/beforerun scan . --fail-on critical
+          } > validation.log 2>&1
+          STATUS=$?
+          set -e
+          cat validation.log
+          if [ "$STATUS" -ne 0 ]; then
+            mkdir -p .release-status
+            cp validation.log .release-status/v1.1.0-failure.txt
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            rm -f .github/workflows/finalize-v1.1.0.yml
+            git add -A
+            git commit -m "Record BeforeRun v1.1.0 validation failure"
+            git push origin HEAD:main
+            exit "$STATUS"
+          fi
       - name: Remove one-time workflow and tag clean source
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           rm .github/workflows/finalize-v1.1.0.yml
+          rm -f .release-status/v1.1.0-failure.txt
           git add -A
           git commit -m "Prepare BeforeRun v1.1.0 release"
           git push origin HEAD:main
