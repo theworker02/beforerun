@@ -47,8 +47,12 @@ func Compare(previous, current Summary) Delta {
 
 	sortFindings(delta.Added)
 	sortFindings(delta.Resolved)
-	sort.Slice(delta.Escalated, func(i, j int) bool { return findingKey(delta.Escalated[i].After) < findingKey(delta.Escalated[j].After) })
-	sort.Slice(delta.Deescalated, func(i, j int) bool { return findingKey(delta.Deescalated[i].After) < findingKey(delta.Deescalated[j].After) })
+	sort.Slice(delta.Escalated, func(i, j int) bool {
+		return findingKey(delta.Escalated[i].After) < findingKey(delta.Escalated[j].After)
+	})
+	sort.Slice(delta.Deescalated, func(i, j int) bool {
+		return findingKey(delta.Deescalated[i].After) < findingKey(delta.Deescalated[j].After)
+	})
 	return delta
 }
 

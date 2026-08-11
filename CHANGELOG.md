@@ -2,6 +2,20 @@
 
 All notable changes to BeforeRun are documented here.
 
+## v1.2.0 — 2026-08-11
+
+### Added
+
+- Durable baseline files with `WriteBaseline`, `ReadBaseline`, and `DiffAgainstBaseline`.
+- `beforerun baseline write <path>` to capture a scan snapshot for CI.
+- `beforerun baseline show <path>` to inspect stored baseline metadata and summary.
+- `beforerun diff --baseline <path> [--fail-on severity]` for pull-request and CI diff gates.
+
+### Compatibility
+
+- Existing scan, compare, CLI, output, rule, and ignore behavior is unchanged.
+- The release is fully additive and remains source-compatible with v1.1.0.
+
 ## v1.1.0 — 2026-08-04
 
 ### Added
