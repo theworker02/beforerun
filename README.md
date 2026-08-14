@@ -38,7 +38,8 @@ BeforeRun never executes repository code, installs dependencies, or uploads scan
 - executable or dynamic binary artifacts;
 - symbolic links escaping the repository root;
 - suspicious local or relative submodules;
-- bidirectional Unicode source deception.
+- bidirectional Unicode source deception;
+- GitHub Actions `pull_request_target` / `workflow_run` privilege risks and `permissions: write-all`.
 
 ## Install the CLI
 
@@ -156,6 +157,7 @@ The public package exports `Scan`, `Options`, `Summary`, `Finding`, severity con
 | `BR009` | Executable and dynamic binary artifacts | Medium–High |
 | `BR010` | Executable script files | Low |
 | `BR011` | Symlinks escaping the repository root | High |
+| `BR012` | GitHub Actions privilege and untrusted-content risks | High–Critical |
 
 See [docs/rules.md](docs/rules.md) for rationale and remediation guidance.
 

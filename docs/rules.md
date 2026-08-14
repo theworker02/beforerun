@@ -67,3 +67,15 @@ Reports scripts with executable mode. This is low severity because it is common 
 Detects symbolic links whose resolved target is outside the scan root.
 
 **Review:** verify the external target is intentional, stable, and safe; otherwise remove the link.
+
+## BR012 — GitHub Actions privilege risks
+
+Detects GitHub Actions workflows under `.github/workflows/` that:
+
+- use `pull_request_target` (high), especially when they also check out or interpolate untrusted pull-request content (critical);
+- use `workflow_run`, which can inherit secrets after an untrusted workflow finishes (high);
+- grant `permissions: write-all` (high).
+
+These patterns can let untrusted pull-request content run with repository secrets or write access.
+
+**Review:** prefer `pull_request` for untrusted code, pin the minimum permission scopes, and never interpolate PR-controlled values into `run:` scripts in privileged jobs.

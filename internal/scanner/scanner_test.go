@@ -65,6 +65,76 @@ func TestDetectsEscapingSymlink(t *testing.T) {
 	}
 }
 
+func TestDetectsGitHubActionsPrivilegeRisks(t *testing.T) {
+	root := t.TempDir()
+	workflowDir := filepath.Join(root, ".github", "workflows")
+	if err := os.MkdirAll(workflowDir, 0o755); err != nil {
+		t.Fatal(err)
+	}
+	content := `
+on: pull_request_target
+permissions: write-all
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+`
+	if err := os.WriteFile(filepath.Join(workflowDir, "untrusted.yml"), []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	summary, err := Scan(root, Options{Threshold: model.SeverityHigh})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !summary.ThresholdMet {
+		t.Fatal("expected threshold to be met")
+	}
+	var messages []string
+	for _, finding := range summary.Findings {
+		if finding.Rule == "BR012" {
+			messages = append(messages, finding.Message)
+		}
+	}
+	if len(messages) < 2 {
+		t.Fatalf("expected multiple BR012 findings, got %#v", summary.Findings)
+	}
+	foundCriticalPR := false
+	foundWriteAll := false
+	for _, finding := range summary.Findings {
+		if finding.Rule != "BR012" {
+			continue
+		}
+		if finding.Severity == model.SeverityCritical {
+			foundCriticalPR = true
+		}
+		if finding.Severity == model.SeverityHigh && finding.Path == ".github/workflows/untrusted.yml" {
+			foundWriteAll = true
+		}
+	}
+	if !foundCriticalPR || !foundWriteAll {
+		t.Fatalf("expected critical pull_request_target and high write-all findings, got %#v", summary.Findings)
+	}
+}
+
+func TestIgnoresNonWorkflowYAMLForBR012(t *testing.T) {
+	root := t.TempDir()
+	if err := os.WriteFile(filepath.Join(root, "deploy.yml"), []byte("on: pull_request_target\npermissions: write-all\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	summary, err := Scan(root, Options{Threshold: model.SeverityLow})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if hasRule(summary.Findings, "BR012") {
+		t.Fatalf("unexpected BR012 outside workflows: %#v", summary.Findings)
+	}
+}
+
 func TestDoesNotFlagRegexDefinitionAsSecret(t *testing.T) {
 	root := t.TempDir()
 	content := "package x\nvar likelySecret = regexp.MustCompile(`(?i)secret\\s*=`)\n"
