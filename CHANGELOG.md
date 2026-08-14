@@ -2,6 +2,18 @@
 
 All notable changes to BeforeRun are documented here.
 
+## v1.3.0 — 2026-08-14
+
+### Added
+
+- `BR012` GitHub Actions privilege detection for `pull_request_target`, `workflow_run`, and `permissions: write-all`.
+- Critical severity when a `pull_request_target` workflow also checks out or interpolates untrusted pull-request content.
+
+### Compatibility
+
+- Existing scan, compare, CLI, output, rule, and ignore behavior is unchanged.
+- The release is fully additive and remains source-compatible with v1.2.0.
+
 ## v1.2.0 — 2026-08-11
 
 ### Added

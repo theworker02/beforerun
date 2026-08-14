@@ -31,7 +31,11 @@ var textRules = []rule{
 	ruleEmbeddedSecrets,
 	ruleBidirectionalControls,
 	ruleGitmodules,
+	ruleGitHubActions,
 }
+
+var githubWriteAll = regexp.MustCompile(`(?i)permissions\s*:\s*write-all`)
+var githubUntrustedRef = regexp.MustCompile(`(?i)github\.(event\.pull_request|head_ref|event\.issue_comment|event\.comment)`)
 
 var pipeToShell = regexp.MustCompile(`(?i)(curl|wget)[^\n|]{0,300}\|\s*(sh|bash|zsh|fish|powershell|pwsh)\b`)
 var powershellExecution = regexp.MustCompile(`(?i)(invoke-expression|\biex\b|downloadstring\s*\(|frombase64string\s*\(|-(?:enc|encodedcommand)\b)`)
@@ -218,6 +222,56 @@ func ruleGitmodules(fc fileContext) []model.Finding {
 		)}
 	}
 	return nil
+}
+
+func ruleGitHubActions(fc fileContext) []model.Finding {
+	rel := filepath.ToSlash(fc.RelPath)
+	if !strings.HasPrefix(rel, ".github/workflows/") {
+		return nil
+	}
+	ext := strings.ToLower(filepath.Ext(rel))
+	if ext != ".yml" && ext != ".yaml" {
+		return nil
+	}
+
+	lower := strings.ToLower(string(fc.Data))
+	var findings []model.Finding
+
+	if strings.Contains(lower, "pull_request_target") {
+		severity := model.SeverityHigh
+		message := "workflow uses pull_request_target, which runs with base-repository privileges on untrusted pull requests"
+		evidence := "on: pull_request_target"
+		if githubUntrustedRef.Find(fc.Data) != nil {
+			severity = model.SeverityCritical
+			message = "pull_request_target workflow checks out or interpolates untrusted pull-request content"
+			evidence = "pull_request_target with github.event.pull_request / github.head_ref"
+		}
+		findings = append(findings, model.NewFinding(
+			"BR012", severity, fc.RelPath, lineOf(fc.Data, []byte("pull_request_target")),
+			message, evidence,
+			"Prefer pull_request for untrusted code. If pull_request_target is required, never check out the PR head or interpolate PR-controlled values into run scripts.",
+		))
+	}
+
+	if strings.Contains(lower, "workflow_run") {
+		findings = append(findings, model.NewFinding(
+			"BR012", model.SeverityHigh, fc.RelPath, lineOf(fc.Data, []byte("workflow_run")),
+			"workflow_run can inherit secrets after an untrusted workflow finishes",
+			"on: workflow_run",
+			"Treat workflow_run artifacts as untrusted. Do not check out the triggering PR or expand its inputs in privileged jobs.",
+		))
+	}
+
+	if loc := githubWriteAll.Find(fc.Data); loc != nil {
+		findings = append(findings, model.NewFinding(
+			"BR012", model.SeverityHigh, fc.RelPath, lineOf(fc.Data, loc),
+			"workflow grants permissions: write-all",
+			"permissions: write-all",
+			"Replace write-all with the minimum required permission scopes.",
+		))
+	}
+
+	return findings
 }
 
 func isExecutionSurface(path string) bool {
