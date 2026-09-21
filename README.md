@@ -1,5 +1,5 @@
-<p align="center">
-  <img src="assets/brand/beforerun-lockup.svg" alt="BeforeRun — inspect before execution" width="760">
+﻿<p align="center">
+  <img src="assets/brand/beforerun-lockup.svg" alt="BeforeRun â€” inspect before execution" width="760">
 </p>
 
 <p align="center">
@@ -10,14 +10,14 @@
   <a href="https://github.com/theworker02/beforerun/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/theworker02/beforerun/actions/workflows/ci.yml/badge.svg"></a>
   <a href="https://pkg.go.dev/github.com/theworker02/beforerun"><img alt="Go Reference" src="https://pkg.go.dev/badge/github.com/theworker02/beforerun.svg"></a>
   <a href="https://theworker02.github.io/beforerun/"><img alt="Official Website" src="https://img.shields.io/badge/website-GitHub%20Pages-38bdf8.svg"></a>
-  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue.svg"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-Proprietary%20(source--available)-blue.svg"></a>
 </p>
 
 <p align="center">
   <a href="https://theworker02.github.io/beforerun/"><strong>Official website</strong></a>
-  ·
+  Â·
   <a href="https://pkg.go.dev/github.com/theworker02/beforerun"><strong>Official Go module</strong></a>
-  ·
+  Â·
   <a href="https://github.com/theworker02/beforerun/releases/latest"><strong>Latest release</strong></a>
 </p>
 
@@ -77,7 +77,7 @@ beforerun version
 Example output:
 
 ```text
-BeforeRun BLOCK — risk 53/100 (HIGH)
+BeforeRun BLOCK â€” risk 53/100 (HIGH)
 Scanned 29 files (184.2 KiB) in /work/untrusted-repo
 Findings: 1 critical, 1 high, 0 medium, 0 low | fail-on=high
 
@@ -146,18 +146,18 @@ The public package exports `Scan`, `Options`, `Summary`, `Finding`, severity con
 
 | Rule | Detects | Default severity |
 | --- | --- | --- |
-| `BR001` | Automatic package lifecycle scripts | Medium–High |
-| `BR002` | VS Code folder-open tasks and terminal overrides | Medium–High |
+| `BR001` | Automatic package lifecycle scripts | Mediumâ€“High |
+| `BR002` | VS Code folder-open tasks and terminal overrides | Mediumâ€“High |
 | `BR003` | Dev container command hooks | Medium |
 | `BR004` | Remote content piped directly to a shell | Critical |
-| `BR005` | Dynamic or encoded PowerShell execution | High–Critical |
-| `BR006` | Possible committed credentials/private keys | High–Critical |
+| `BR005` | Dynamic or encoded PowerShell execution | Highâ€“Critical |
+| `BR006` | Possible committed credentials/private keys | Highâ€“Critical |
 | `BR007` | Bidirectional Unicode source controls | High |
 | `BR008` | Local or relative Git submodule URLs | High |
-| `BR009` | Executable and dynamic binary artifacts | Medium–High |
+| `BR009` | Executable and dynamic binary artifacts | Mediumâ€“High |
 | `BR010` | Executable script files | Low |
 | `BR011` | Symlinks escaping the repository root | High |
-| `BR012` | GitHub Actions privilege and untrusted-content risks | High–Critical |
+| `BR012` | GitHub Actions privilege and untrusted-content risks | Highâ€“Critical |
 
 See [docs/rules.md](docs/rules.md) for rationale and remediation guidance.
 
@@ -212,4 +212,5 @@ See [SECURITY.md](SECURITY.md) for vulnerability reporting.
 
 ## License
 
-MIT © 2026 Matthew Looney
+**Source-available proprietary** — evaluation under [LICENSE](./LICENSE); commercial / production use via [COMMERCIAL.md](./COMMERCIAL.md). See [LICENSE_TRANSITION_NOTICE.md](./LICENSE_TRANSITION_NOTICE.md) and [NOTICE](./NOTICE).
+
