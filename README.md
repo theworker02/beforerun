@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/brand/beforerun-lockup.svg" alt="BeforeRun â€” inspect before execution" width="760">
+  <img src="assets/brand/beforerun-lockup.svg" alt="BeforeRun Ã¢â‚¬â€ inspect before execution" width="760">
 </p>
 
 <p align="center">
@@ -15,9 +15,9 @@
 
 <p align="center">
   <a href="https://theworker02.github.io/beforerun/"><strong>Official website</strong></a>
-  Â·
+  Ã‚Â·
   <a href="https://pkg.go.dev/github.com/theworker02/beforerun"><strong>Official Go module</strong></a>
-  Â·
+  Ã‚Â·
   <a href="https://github.com/theworker02/beforerun/releases/latest"><strong>Latest release</strong></a>
 </p>
 
@@ -77,7 +77,7 @@ beforerun version
 Example output:
 
 ```text
-BeforeRun BLOCK â€” risk 53/100 (HIGH)
+BeforeRun BLOCK Ã¢â‚¬â€ risk 53/100 (HIGH)
 Scanned 29 files (184.2 KiB) in /work/untrusted-repo
 Findings: 1 critical, 1 high, 0 medium, 0 low | fail-on=high
 
@@ -146,18 +146,18 @@ The public package exports `Scan`, `Options`, `Summary`, `Finding`, severity con
 
 | Rule | Detects | Default severity |
 | --- | --- | --- |
-| `BR001` | Automatic package lifecycle scripts | Mediumâ€“High |
-| `BR002` | VS Code folder-open tasks and terminal overrides | Mediumâ€“High |
+| `BR001` | Automatic package lifecycle scripts | MediumÃ¢â‚¬â€œHigh |
+| `BR002` | VS Code folder-open tasks and terminal overrides | MediumÃ¢â‚¬â€œHigh |
 | `BR003` | Dev container command hooks | Medium |
 | `BR004` | Remote content piped directly to a shell | Critical |
-| `BR005` | Dynamic or encoded PowerShell execution | Highâ€“Critical |
-| `BR006` | Possible committed credentials/private keys | Highâ€“Critical |
+| `BR005` | Dynamic or encoded PowerShell execution | HighÃ¢â‚¬â€œCritical |
+| `BR006` | Possible committed credentials/private keys | HighÃ¢â‚¬â€œCritical |
 | `BR007` | Bidirectional Unicode source controls | High |
 | `BR008` | Local or relative Git submodule URLs | High |
-| `BR009` | Executable and dynamic binary artifacts | Mediumâ€“High |
+| `BR009` | Executable and dynamic binary artifacts | MediumÃ¢â‚¬â€œHigh |
 | `BR010` | Executable script files | Low |
 | `BR011` | Symlinks escaping the repository root | High |
-| `BR012` | GitHub Actions privilege and untrusted-content risks | Highâ€“Critical |
+| `BR012` | GitHub Actions privilege and untrusted-content risks | HighÃ¢â‚¬â€œCritical |
 
 See [docs/rules.md](docs/rules.md) for rationale and remediation guidance.
 
@@ -212,7 +212,7 @@ See [SECURITY.md](SECURITY.md) for vulnerability reporting.
 
 ## License
 
-**Source-available proprietary** — evaluation under [LICENSE](./LICENSE); commercial / production use via [COMMERCIAL.md](./COMMERCIAL.md). See [LICENSE_TRANSITION_NOTICE.md](./LICENSE_TRANSITION_NOTICE.md) and [NOTICE](./NOTICE).
+**Source-available proprietary** â€” evaluation under [LICENSE](./LICENSE); commercial / production use via [COMMERCIAL.md](./COMMERCIAL.md). See [LICENSE_TRANSITION_NOTICE.md](./LICENSE_TRANSITION_NOTICE.md) and [NOTICE](./NOTICE).
 
 
 ---
@@ -220,3 +220,7 @@ See [SECURITY.md](SECURITY.md) for vulnerability reporting.
 ## License & acquisition
 
 This project is **proprietary**. Production use, redistribution, and commercial deployment require a written commercial license or completed acquisition. See [LICENSE](./LICENSE) and [ACQUISITION.md](./ACQUISITION.md). Contact [@theworker02](https://github.com/theworker02).
+
+## Acquisition diligence
+
+Buyer-facing diligence materials live in [docs/acquisition/](./docs/acquisition/). Commercial licensing contact path: [COMMERCIAL.md](./COMMERCIAL.md).
