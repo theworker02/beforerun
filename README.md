@@ -1,4 +1,8 @@
 <p align="center">
+  <img src="docs/logo.svg" alt="beforerun official logo" width="128" height="128">
+</p>
+
+<p align="center">
   <img src="assets/brand/beforerun-lockup.svg" alt="BeforeRun Ã¢â‚¬â€ inspect before execution" width="760">
 </p>
 
